@@ -1,7 +1,7 @@
-import { IsDateString, Length } from "class-validator";
+import { IsDateString, IsNumber, Length } from "class-validator";
 
 export class CreateEventDto {
-  @Length(4, 10, { message: "The name length is superior to 4 and inferior to 10" })
+  @Length(4, 255, { message: "The name length is superior to 4 and inferior to 10" })
   name: string;
   @Length(10, 255)
   description: string;
@@ -9,4 +9,6 @@ export class CreateEventDto {
   when: Date;
   @Length(5, 255)
   address: string;
+  @IsNumber()
+  userId: number;
 }
