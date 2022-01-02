@@ -1,10 +1,10 @@
 import { Event } from "../events/entities/event.entity";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { registerAs } from "@nestjs/config";
 import { User } from "../user/entities/user.entity";
+import { JwtModuleOptions } from "@nestjs/jwt";
 
-export default registerAs("orm.config", (): TypeOrmModuleOptions =>
-  ({
+export default function ormOptionsDev(): TypeOrmModuleOptions {
+  return {
     type: "mysql",
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT),
@@ -13,4 +13,5 @@ export default registerAs("orm.config", (): TypeOrmModuleOptions =>
     database: process.env.DB_DATABASE,
     entities: [Event, User],
     synchronize: true
-  }));
+  };
+};

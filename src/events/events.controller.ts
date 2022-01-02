@@ -9,11 +9,12 @@ import {
   ValidationPipe,
   Logger,
   Inject,
-  ParseUUIDPipe
+  ParseUUIDPipe, UseGuards
 } from "@nestjs/common";
 import { EventsService } from "./events.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { AuthGuardJwt } from "../auth/guard/auth.guard.jwt";
 
 @Controller("api/events")
 export class EventsController {
@@ -26,6 +27,7 @@ export class EventsController {
   }
 
   @Post()
+  @UseGuards(AuthGuardJwt)
   create(@Body(ValidationPipe) createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }
