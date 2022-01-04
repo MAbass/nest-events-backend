@@ -1,10 +1,9 @@
 import { Controller, Post, UseGuards, Request, Get } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import AuthService from "./auth.service";
-import { CurrentUser } from "./current-user.decorators";
+import { CurrentUser } from "./decorators/current-user.decorators";
 import { User } from "../user/entities/user.entity";
-import { AuthGuardJwt } from "./guard/auth.guard.jwt";
-import { AuthGuardLocal } from "./guard/auth.guard.local";
+import { AuthGuardJwt } from "./guards/auth.guard.jwt";
+import { AuthGuardLocal } from "./guards/auth.guard.local";
 
 @Controller("/api")
 export class AuthController {

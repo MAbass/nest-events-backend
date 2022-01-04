@@ -1,12 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { Repository } from "typeorm";
-import { User } from "../user/entities/user.entity";
+import { User } from "../../user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, "jwtgate") {
+  private readonly logger: Logger = new Logger(JwtStrategy.name);
+
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

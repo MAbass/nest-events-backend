@@ -13,6 +13,7 @@ import {
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { RoleEnum } from "./enum/role.enum";
 
 @Controller("api/user")
 export class UserController {
@@ -23,8 +24,14 @@ export class UserController {
 
   @Post()
   create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.create(createUserDto, RoleEnum.USER);
   }
+
+  @Post("admin")
+  createAdmin(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto, RoleEnum.ADMIN);
+  }
+
 
 
   @Get()

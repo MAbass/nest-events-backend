@@ -1,20 +1,24 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  ValidationPipe,
-  Logger,
+  Get,
   Inject,
-  ParseUUIDPipe, UseGuards
+  Logger,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  UseGuards,
+  ValidationPipe
 } from "@nestjs/common";
 import { EventsService } from "./events.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
-import { AuthGuardJwt } from "../auth/guard/auth.guard.jwt";
+import { AuthGuardJwt } from "../auth/guards/auth.guard.jwt";
+import { RoleEnum } from "../user/enum/role.enum";
+import { RolesDecorators } from "../auth/decorators/roles.decorators";
+import { RolesGuard } from "../auth/guards/roles.guard";
 
 @Controller("api/events")
 export class EventsController {
@@ -27,7 +31,8 @@ export class EventsController {
   }
 
   @Post()
-  @UseGuards(AuthGuardJwt)
+  @UseGuards(AuthGuardJwt, RolesGuard)
+  @RolesDecorators(RoleEnum.ADMIN)
   create(@Body(ValidationPipe) createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }
