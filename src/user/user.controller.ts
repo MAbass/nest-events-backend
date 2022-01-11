@@ -33,13 +33,12 @@ export class UserController {
   }
 
 
-
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
-  @Get(":id")
+  /*@Get(":id")
   findOne(@Param("id", ParseIntPipe) id: string) {
     return this.userService.findOne(+id);
   }
@@ -52,5 +51,5 @@ export class UserController {
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.userService.remove(+id);
-  }
+  }*/
 }

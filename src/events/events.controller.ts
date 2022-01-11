@@ -43,7 +43,7 @@ export class EventsController {
     return this.eventsService.findAll();
   }
 
-  @Get(":id")
+ /* @Get(":id")
   findOne(@Param("id", ParseUUIDPipe) id: string) {
     return this.eventsService.findOne(id);
   }
@@ -56,5 +56,5 @@ export class EventsController {
   @Delete(":id")
   remove(@Param("id", ParseUUIDPipe) id: string) {
     return this.eventsService.remove(id);
-  }
+  }*/
 }
