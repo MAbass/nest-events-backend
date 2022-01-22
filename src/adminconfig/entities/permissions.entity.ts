@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { ObjectsEntity } from "./objects.entity";
+import { SubjectEntity } from "./subject.entity";
 import { PermissionAction } from "../../auth/enum/permission.action";
 
 @Entity()
@@ -8,7 +8,7 @@ export class PermissionsEntity {
   id: number;
   @Column({ unique: true })
   action: PermissionAction;
-  @ManyToOne(() => ObjectsEntity, object => object.id )
-  object: ObjectsEntity;
+  @ManyToOne(() => SubjectEntity, object => object.id )
+  subject: SubjectEntity;
 
 }

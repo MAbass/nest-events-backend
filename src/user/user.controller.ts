@@ -8,14 +8,16 @@ import {
   Delete,
   ParseArrayPipe,
   Logger,
-  ValidationPipe, ParseIntPipe
+  ValidationPipe, ParseIntPipe, UseGuards
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { RoleEnum } from "./enum/role.enum";
+import { AuthGuardJwt } from "../auth/guards/auth.guard.jwt";
 
 @Controller("api")
+@UseGuards(AuthGuardJwt)
 export class UserController {
   private readonly logger: Logger = new Logger(UserController.name);
 

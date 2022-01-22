@@ -1,15 +1,14 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, JoinTable } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "../../events/entities/event.entity";
 import { RoleEnum } from "../enum/role.enum";
-import { PermissionsEntity } from "../../adminconfig/entities/permissions.entity";
+import { RoleEntity } from "../../adminconfig/entities/role.entity";
+
 @Entity("user")
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ unique: true })
   username: string;
-  @Column({ type: "enum", enum: RoleEnum, default: RoleEnum.USER })
-  role: RoleEnum;
   @Column()
   firstname: string;
   @Column()
@@ -20,12 +19,11 @@ export class UserEntity {
   password: string;
   @OneToMany(() => Event, (event) => event.user, {})
   events: Event[];
-  @ManyToMany(type => PermissionsEntity, { cascade: true })
+  @ManyToMany(() => RoleEntity, (role) => role.users, { eager: false })
   @JoinTable({
-    name: "user_permissions",
-    joinColumn: { name: "user_id", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "permission_id", referencedColumnName: "id" }
+    name: "user_roles",
+    inverseJoinColumn: { name: "role_id", referencedColumnName: "id" },
+    joinColumn: { name: "user_id", referencedColumnName: "id" }
   })
-  permissions: PermissionsEntity[];
-
+  roles: RoleEntity[];
 }

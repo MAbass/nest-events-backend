@@ -4,7 +4,6 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { AuthGuardJwt } from "../auth/guards/auth.guard.jwt";
 import { RoleEnum } from "../user/enum/role.enum";
 import { RolesDecorators } from "../auth/decorators/roles.decorators";
-import { RolesGuard } from "../auth/guards/roles.guard";
 import { CheckPermissions } from "../auth/decorators/check.permissions";
 import { PermissionsGuard } from "../auth/guards/permission.guard";
 import { PermissionAction } from "../auth/enum/permission.action";
@@ -17,7 +16,7 @@ export class EventsController {
   }
 
   @Post()
-  @UseGuards(AuthGuardJwt, RolesGuard, PermissionsGuard)
+  @UseGuards(AuthGuardJwt, PermissionsGuard)
   @RolesDecorators(RoleEnum.USER)
   @CheckPermissions([PermissionAction.POST, "Event"])
   create(@Body(ValidationPipe) createEventDto: CreateEventDto) {

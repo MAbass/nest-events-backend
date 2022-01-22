@@ -7,6 +7,7 @@ import * as bcrypt from "bcrypt";
 import { RoleEnum } from "./enum/role.enum";
 import { PermissionsEntity } from "../adminconfig/entities/permissions.entity";
 import { TypeOrmExceptionFilter } from "../exceptions/type.orm.exception.filter";
+import * as _ from "lodash";
 
 @Injectable()
 @UseFilters(new TypeOrmExceptionFilter())
@@ -37,13 +38,20 @@ export class UserService {
   }
 
   async findAllPermissionsOfUser(user: UserEntity) {
+    const permissions: PermissionsEntity[] = [];
     const userFound: UserEntity = await getConnection()
       .getRepository(UserEntity)
       .createQueryBuilder("user")
-      .innerJoinAndSelect("user.permissions", "permissions")
-      .innerJoinAndSelect("permissions.object","permissionObject")
+      .innerJoinAndSelect("user.roles", "userRoles")
+      .innerJoinAndSelect("userRoles.permissions", "userRolesPermissions")
+      .innerJoinAndSelect("userRolesPermissions.subject", "userRolesPermissionsSubject")
       .where("user.id = :id", { id: user.id })
       .getOne();
-    return userFound.permissions;
+    for (const role of userFound.roles) {
+      for (const permission of role.permissions) {
+        permissions.push(permission);
+      }
+    }
+    return _.uniqWith(permissions, _.isEqual);
   }
 }
