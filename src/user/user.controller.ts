@@ -15,25 +15,29 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { RoleEnum } from "./enum/role.enum";
 
-@Controller("api/user")
+@Controller("api")
 export class UserController {
   private readonly logger: Logger = new Logger(UserController.name);
 
   constructor(private readonly userService: UserService) {
   }
 
-  @Post()
+  @Post("user")
   create(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto, RoleEnum.USER);
   }
+  @Post("object")
+  createObject(@Body(ValidationPipe) createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto, RoleEnum.USER);
+  }
 
-  @Post("admin")
+  @Post("user/admin")
   createAdmin(@Body(ValidationPipe) createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto, RoleEnum.ADMIN);
   }
 
 
-  @Get()
+  @Get("user")
   findAll() {
     return this.userService.findAll();
   }

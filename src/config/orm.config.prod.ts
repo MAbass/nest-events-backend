@@ -1,7 +1,8 @@
 import { Event } from "../events/entities/event.entity";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { User } from "../user/entities/user.entity";
-import { JwtModuleOptions } from "@nestjs/jwt";
+import { UserEntity } from "../user/entities/user.entity";
+import { ObjectsEntity } from "../adminconfig/entities/objects.entity";
+import { PermissionsEntity } from "../adminconfig/entities/permissions.entity";
 
 export default function ormOptionsProd(): TypeOrmModuleOptions {
   return {
@@ -11,7 +12,7 @@ export default function ormOptionsProd(): TypeOrmModuleOptions {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
-    entities: [Event, User],
+    entities: [Event, UserEntity, ObjectsEntity, PermissionsEntity],
     synchronize: false
   };
 };

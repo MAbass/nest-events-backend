@@ -1,24 +1,25 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, UseFilters } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { Repository } from "typeorm";
-import { User } from "./entities/user.entity";
+import { getConnection, Repository } from "typeorm";
+import { UserEntity } from "./entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import * as bcrypt from "bcrypt";
 import { RoleEnum } from "./enum/role.enum";
+import { PermissionsEntity } from "../adminconfig/entities/permissions.entity";
+import { TypeOrmExceptionFilter } from "../exceptions/type.orm.exception.filter";
 
 @Injectable()
+@UseFilters(new TypeOrmExceptionFilter())
 export class UserService {
   private readonly logger: Logger = new Logger(UserService.name);
 
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
   ) {
   }
 
   async create(createUserDto: CreateUserDto, role: RoleEnum) {
-    this.logger.debug(`Trying to save user: ${createUserDto}`);
     createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
 
     return this.userRepository.save({
@@ -35,15 +36,14 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  findOne(id: number) {
-    return this.userRepository.find({ id: id });
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findAllPermissionsOfUser(user: UserEntity) {
+    const userFound: UserEntity = await getConnection()
+      .getRepository(UserEntity)
+      .createQueryBuilder("user")
+      .innerJoinAndSelect("user.permissions", "permissions")
+      .innerJoinAndSelect("permissions.object","permissionObject")
+      .where("user.id = :id", { id: user.id })
+      .getOne();
+    return userFound.permissions;
   }
 }

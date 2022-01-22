@@ -8,6 +8,8 @@ import ormConfigProd from "./config/orm.config.prod";
 import { ConfigModule } from "@nestjs/config";
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { AdminConfigModule } from "./adminconfig/adminconfig.module";
+import { ExceptionsModule } from './exceptions/exceptions.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -17,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
   }),
     TypeOrmModule.forRootAsync({
       useFactory: process.env.NODE_ENV == "prod" ? ormConfigProd : ormOptionsDev
-    }), EventsModule, UserModule, AuthModule],
+    }), EventsModule, UserModule, AuthModule, AdminConfigModule, ExceptionsModule],
   controllers: [AppController],
   providers: [AppService]
 })

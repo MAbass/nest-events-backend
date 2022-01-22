@@ -4,20 +4,20 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 import { Repository } from "typeorm";
 import { Event } from "./entities/event.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../user/entities/user.entity";
+import { UserEntity } from "../user/entities/user.entity";
 
 @Injectable()
 export class EventsService {
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
   ) {
   }
 
   async create(createEventDto: CreateEventDto) {
-    const user: User = await this.userRepository.findOne({ id: createEventDto.userId });
+    const user: UserEntity = await this.userRepository.findOne({ id: createEventDto.userId });
     if (!user)
       throw new NotFoundException();
 
