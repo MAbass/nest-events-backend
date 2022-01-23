@@ -1,5 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, NotFoundException } from "@nestjs/common";
-import { Request, Response } from "express";
+import { NotFoundException } from "@nestjs/common";
 
 export class EntityNotFoundException extends NotFoundException {
   constructor(entity: string) {

@@ -1,6 +1,5 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "../../events/entities/event.entity";
-import { RoleEnum } from "../enum/role.enum";
 import { RoleEntity } from "../../adminconfig/entities/role.entity";
 
 @Entity("user")
